@@ -18,10 +18,20 @@ public class Tasks {
     private String task;
 
     @Column
-    private Long peopleId;
+    private String price;
 
-    public Tasks(String task, Long peopleId) {
+    @Column
+    private Long assigneeId;
+
+    @Column
+    private Long tripId;
+
+    public Tasks(String task, String price, Long assigneeId, Long tripId) {
         this.task = task;
-        this.peopleId = peopleId;
+        this.price = price;
+        this.assigneeId = assigneeId;
+        this.tripId = tripId;
     }
+
+    protected Tasks() {};
 }

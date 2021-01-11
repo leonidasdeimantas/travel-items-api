@@ -1,6 +1,5 @@
 package com.travelitems.beapi.domain;
 
-
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -10,21 +9,25 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Peoples {
+public class Trip {
     @Id
     @GeneratedValue
     private Long id;
 
     @Column
+    private String tripUrl;
+
+    @Column
     private String name;
 
     @Column
-    private Long tripId;
+    private String location;
 
-    public Peoples(String name, Long tripId) {
+    public Trip(String tripUrl, String name, String location) {
+        this.tripUrl = tripUrl;
         this.name = name;
-        this.tripId = tripId;
+        this.location = location;
     }
 
-    protected  Peoples() {};
+    protected Trip() {};
 }
