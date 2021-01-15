@@ -15,15 +15,15 @@ public class Peoples {
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(nullable=false)
     private String name;
 
-    @Column
-    private Long tripId;
+    @Column(nullable=false)
+    private String tripUrl;
 
-    public Peoples(String name, Long tripId) {
+    public Peoples(String name, String tripUrl) {
         this.name = name;
-        this.tripId = tripId;
+        this.tripUrl = tripUrl;
     }
 
     protected  Peoples() {};

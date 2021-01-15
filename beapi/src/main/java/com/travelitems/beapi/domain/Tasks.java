@@ -14,7 +14,7 @@ public class Tasks {
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(nullable=false)
     private String task;
 
     @Column
@@ -23,14 +23,14 @@ public class Tasks {
     @Column
     private Long assigneeId;
 
-    @Column
-    private Long tripId;
+    @Column(nullable=false)
+    private String tripUrl;
 
-    public Tasks(String task, String price, Long assigneeId, Long tripId) {
+    public Tasks(String task, String price, Long assigneeId, String tripUrl) {
         this.task = task;
         this.price = price;
         this.assigneeId = assigneeId;
-        this.tripId = tripId;
+        this.tripUrl = tripUrl;
     }
 
     protected Tasks() {};

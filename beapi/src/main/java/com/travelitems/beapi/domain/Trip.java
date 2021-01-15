@@ -14,10 +14,10 @@ public class Trip {
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(nullable=false)
     private String tripUrl;
 
-    @Column
+    @Column(nullable=false)
     private String name;
 
     @Column
