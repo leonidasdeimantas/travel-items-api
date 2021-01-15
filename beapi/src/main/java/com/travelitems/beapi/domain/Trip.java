@@ -30,4 +30,8 @@ public class Trip {
     }
 
     protected Trip() {};
+
+    public TripDto tripToDto() {
+        return new TripDto(this.tripUrl, this.name, this.location);
+    }
 }

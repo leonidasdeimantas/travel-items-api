@@ -6,4 +6,9 @@ import lombok.Data;
 public class TripNewDto {
     private String name;
     private String location;
+
+    public TripNewDto(String name, String location) {
+        this.name = name;
+        this.location = location;
+    }
 }

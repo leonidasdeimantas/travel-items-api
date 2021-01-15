@@ -14,9 +14,7 @@ public class TripsService {
     private final TripRepository tripRepository;
 
     public TripDto createTrip(TripNewDto tripNewDtoData) {
-        Trip newTrip = new Trip(RandomString.get(8), tripNewDtoData.getName(), tripNewDtoData.getLocation());
-        TripDto tripDto = new TripDto(newTrip.getTripUrl(), newTrip.getName(), newTrip.getLocation());
-        tripRepository.save(newTrip);
-        return tripDto;
+        return tripRepository.save(new Trip(RandomString.get(8), tripNewDtoData.getName(),
+                tripNewDtoData.getLocation())).tripToDto();
     }
 }
