@@ -14,6 +14,7 @@ import javax.management.AttributeNotFoundException;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin
 @RequestMapping("/")
 public class MainController {
     private final TasksService tasksService;
@@ -33,6 +34,15 @@ public class MainController {
     @GetMapping(value = "/peoples")
     public Iterable<Peoples> getAllTripPeoples(@RequestParam String tripUrl) {
         return peoplesService.findAssignees(tripUrl);
+    }
+
+    @GetMapping(value = "/trip")
+    public TripDto getTripExist(@RequestParam String tripUrl) {
+        try {
+            return tripsService.checkTrip(tripUrl);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping(value = "/task")
