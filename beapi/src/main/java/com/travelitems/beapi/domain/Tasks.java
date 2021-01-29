@@ -26,11 +26,15 @@ public class Tasks {
     @Column(nullable=false)
     private String tripUrl;
 
-    public Tasks(String task, String price, Long assigneeId, String tripUrl) {
+    @Column
+    private boolean completed;
+
+    public Tasks(String task, String price, Long assigneeId, String tripUrl, boolean completed) {
         this.task = task;
         this.price = price;
         this.assigneeId = assigneeId;
         this.tripUrl = tripUrl;
+        this.completed = completed;
     }
 
     protected Tasks() {};

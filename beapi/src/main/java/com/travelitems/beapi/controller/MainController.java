@@ -6,6 +6,7 @@ import com.travelitems.beapi.service.TasksService;
 import com.travelitems.beapi.service.TripsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,6 +55,15 @@ public class MainController {
         }
     }
 
+    @PutMapping(value = "/task")
+    public Tasks updateTask(@RequestBody Tasks task) {
+        try {
+            return tasksService.updateTask(task);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping(value = "/people")
     public Peoples addPeople(@RequestBody Peoples people) {
         try {
@@ -66,5 +76,15 @@ public class MainController {
     @PostMapping(value = "/trip")
     public TripDto addTrip(@RequestBody TripNewDto tripNewDtoData) {
         return tripsService.createTrip(tripNewDtoData);
+    }
+
+    @DeleteMapping(value = "/task", params = {"tripUrl", "taskId"})
+    public ResponseEntity<Long> deleteTask(@RequestParam String tripUrl, @RequestParam Long taskId){
+        try {
+            tasksService.deleteTask(tripUrl, taskId);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(taskId, HttpStatus.OK);
     }
 }
