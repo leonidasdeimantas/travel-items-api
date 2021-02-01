@@ -24,7 +24,10 @@ public class TasksService {
         return tasksRepository.save(task);
     }
 
-    public Iterable<Tasks> findTasks(String url) {
+    public Iterable<Tasks> findTasks(String url) throws AttributeNotFoundException {
+        if (!tripRepository.findByTripUrl(url).isPresent()) {
+            throw new AttributeNotFoundException();
+        }
         return tasksRepository.findByTripUrl(url);
     }
 

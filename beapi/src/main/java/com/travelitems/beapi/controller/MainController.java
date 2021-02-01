@@ -24,7 +24,11 @@ public class MainController {
 
     @GetMapping(value = "/tasks", params = "tripUrl")
     public Iterable<Tasks> getAllTripTasks(@RequestParam String tripUrl) {
-        return tasksService.findTasks(tripUrl);
+        try {
+            return tasksService.findTasks(tripUrl);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(value = "/tasks", params = {"tripUrl", "assigneeId"})
