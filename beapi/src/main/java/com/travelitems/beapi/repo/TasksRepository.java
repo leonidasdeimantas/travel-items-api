@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface TasksRepository extends CrudRepository<Tasks, Long> {
     Iterable<Tasks> findByTripUrlAndAssigneeId(String tripUrl, Long assigneeId);
     Iterable<Tasks> findByTripUrl(String tripUrl);
+    Iterable<Tasks> findByAssigneeId(Long assigneeId);
 }

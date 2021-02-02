@@ -91,4 +91,14 @@ public class MainController {
         }
         return new ResponseEntity<>(taskId, HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/people", params = {"tripUrl", "taskId"})
+    public ResponseEntity<Long> deleteAssignee(@RequestParam String tripUrl, @RequestParam Long taskId){
+        try {
+            peoplesService.deleteAssignee(tripUrl, taskId);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(taskId, HttpStatus.OK);
+    }
 }
