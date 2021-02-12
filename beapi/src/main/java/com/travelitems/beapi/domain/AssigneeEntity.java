@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Peoples {
+public class AssigneeEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -21,10 +21,10 @@ public class Peoples {
     @Column(nullable=false)
     private String tripUrl;
 
-    public Peoples(String name, String tripUrl) {
+    public AssigneeEntity(String name, String tripUrl) {
         this.name = name;
         this.tripUrl = tripUrl;
     }
 
-    protected  Peoples() {};
+    protected AssigneeEntity() {};
 }

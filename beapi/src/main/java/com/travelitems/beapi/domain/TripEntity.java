@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Trip {
+public class TripEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,13 +23,13 @@ public class Trip {
     @Column
     private String location;
 
-    public Trip(String tripUrl, String name, String location) {
+    public TripEntity(String tripUrl, String name, String location) {
         this.tripUrl = tripUrl;
         this.name = name;
         this.location = location;
     }
 
-    protected Trip() {};
+    protected TripEntity() {};
 
     public TripDto tripToDto() {
         return new TripDto(this.tripUrl, this.name, this.location);

@@ -1,7 +1,6 @@
 package com.travelitems.beapi.service;
 
-import com.travelitems.beapi.domain.Peoples;
-import com.travelitems.beapi.domain.Tasks;
+import com.travelitems.beapi.domain.TaskEntity;
 import com.travelitems.beapi.repo.TasksRepository;
 import com.travelitems.beapi.repo.TripRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,26 +16,26 @@ public class TasksService {
     private final TasksRepository tasksRepository;
     private final TripRepository tripRepository;
 
-    public Tasks addTask(Tasks task) throws AttributeNotFoundException {
+    public TaskEntity addTask(TaskEntity task) throws AttributeNotFoundException {
         if (!tripRepository.findByTripUrl(task.getTripUrl()).isPresent()) {
             throw new AttributeNotFoundException();
         }
         return tasksRepository.save(task);
     }
 
-    public Iterable<Tasks> findTasks(String url) throws AttributeNotFoundException {
+    public Iterable<TaskEntity> findTasks(String url) throws AttributeNotFoundException {
         if (!tripRepository.findByTripUrl(url).isPresent()) {
             throw new AttributeNotFoundException();
         }
         return tasksRepository.findByTripUrl(url);
     }
 
-    public Iterable<Tasks> findTasks(String url, Long id) {
+    public Iterable<TaskEntity> findTasks(String url, Long id) {
         return tasksRepository.findByTripUrlAndAssigneeId(url, id);
     }
 
-    public Tasks updateTask(Tasks task) throws AttributeNotFoundException {
-        Tasks taskEntity = tasksRepository.findById(task.getId()).orElseThrow(AttributeNotFoundException::new);
+    public TaskEntity updateTask(TaskEntity task) throws AttributeNotFoundException {
+        TaskEntity taskEntity = tasksRepository.findById(task.getId()).orElseThrow(AttributeNotFoundException::new);
 
         taskEntity.setAssigneeId(task.getAssigneeId());
         taskEntity.setTask(task.getTask());

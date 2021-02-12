@@ -3,11 +3,11 @@ package com.travelitems.beapi.domain;
 import lombok.Data;
 
 @Data
-public class TripNewDto {
+public class NewTripDto {
     private String name;
     private String location;
 
-    public TripNewDto(String name, String location) {
+    public NewTripDto(String name, String location) {
         this.name = name;
         this.location = location;
     }

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Tasks {
+public class TaskEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,13 +23,16 @@ public class Tasks {
     @Column
     private Long assigneeId;
 
+    @Column
+    private String tags;
+
     @Column(nullable=false)
     private String tripUrl;
 
     @Column
     private boolean completed;
 
-    public Tasks(String task, String price, Long assigneeId, String tripUrl, boolean completed) {
+    public TaskEntity(String task, String price, Long assigneeId, String tripUrl, boolean completed) {
         this.task = task;
         this.price = price;
         this.assigneeId = assigneeId;
@@ -37,5 +40,5 @@ public class Tasks {
         this.completed = completed;
     }
 
-    protected Tasks() {};
+    protected TaskEntity() {};
 }
