@@ -22,6 +22,9 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+	implementation "io.springfox:springfox-boot-starter:3.0.0"
+	compile "io.springfox:springfox-swagger-ui:3.0.0"
 }
 
 test {

@@ -1,6 +1,5 @@
 package com.travelitems.beapi.service;
 
-import com.travelitems.beapi.domain.TaskEntity;
 import com.travelitems.beapi.domain.TripDto;
 import com.travelitems.beapi.domain.NewTripDto;
 import com.travelitems.beapi.domain.TripEntity;
