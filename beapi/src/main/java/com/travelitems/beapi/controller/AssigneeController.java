@@ -33,12 +33,12 @@ public class AssigneeController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Long> deleteAssignee(@RequestParam String tripUrl, @RequestParam Long taskId){
+    public ResponseEntity<Long> deleteAssignee(@RequestParam String tripUrl, @RequestParam Long assigneeId){
         try {
-            assigneeService.deleteAssignee(tripUrl, taskId);
+            assigneeService.deleteAssignee(tripUrl, assigneeId);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(taskId, HttpStatus.OK);
+        return new ResponseEntity<>(assigneeId, HttpStatus.OK);
     }
 }
