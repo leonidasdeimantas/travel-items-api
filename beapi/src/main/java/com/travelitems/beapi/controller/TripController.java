@@ -34,12 +34,12 @@ public class TripController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteTrip(@RequestParam String tripUrl){
+    public ResponseEntity deleteTrip(@RequestParam String tripUrl){
         try {
             tripsService.deleteTrip(tripUrl);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(tripUrl, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

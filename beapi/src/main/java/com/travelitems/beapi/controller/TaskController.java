@@ -33,30 +33,32 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskEntity addTask(@RequestBody TaskEntity task) {
+    public ResponseEntity addTask(@RequestBody TaskEntity task) {
         try {
-            return tasksService.addTask(task);
+            tasksService.addTask(task);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping
-    public TaskEntity updateTask(@RequestBody TaskEntity task) {
+    public ResponseEntity updateTask(@RequestBody TaskEntity task) {
         try {
-            return tasksService.updateTask(task);
+            tasksService.updateTask(task);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<Long> deleteTask(@RequestParam String tripUrl, @RequestParam Long taskId){
+    public ResponseEntity deleteTask(@RequestParam String tripUrl, @RequestParam Long taskId){
         try {
             tasksService.deleteTask(tripUrl, taskId);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(taskId, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

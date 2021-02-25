@@ -24,21 +24,22 @@ public class AssigneeController {
     }
 
     @PostMapping
-    public AssigneeEntity addAssignee(@RequestBody AssigneeEntity assignee) {
+    public ResponseEntity addAssignee(@RequestBody AssigneeEntity assignee) {
         try {
-            return assigneeService.addAssignee(assignee);
+            assigneeService.addAssignee(assignee);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<Long> deleteAssignee(@RequestParam String tripUrl, @RequestParam Long assigneeId){
+    public ResponseEntity deleteAssignee(@RequestParam String tripUrl, @RequestParam Long assigneeId){
         try {
             assigneeService.deleteAssignee(tripUrl, assigneeId);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(assigneeId, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
