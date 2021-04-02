@@ -44,7 +44,7 @@ public class TripsServiceTest {
         Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.of(tripEntity));
         Mockito.when(tripEntity.tripToDto()).thenReturn(tripDto);
 
-        Assertions.assertEquals(tripsService.getTrip(TRIP_URL), tripDto);
+        Assertions.assertEquals(tripDto, tripsService.getTrip(TRIP_URL));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class TripsServiceTest {
         Mockito.when(tripEntity.tripToDto()).thenReturn(tripDto);
 
         NewTripDto tripStub = new NewTripDto("test", "test");
-        Assertions.assertEquals(tripsService.createTrip(tripStub), tripDto);
+        Assertions.assertEquals(tripDto, tripsService.createTrip(tripStub));
     }
 
     @Test
