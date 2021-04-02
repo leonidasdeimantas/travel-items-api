@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.management.AttributeNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class TasksService {
         if (!tripRepository.findByTripUrl(task.getTripUrl()).isPresent()) {
             throw new AttributeNotFoundException();
         }
+        task.setTime(LocalDateTime.now());
         return tasksRepository.save(task);
     }
 

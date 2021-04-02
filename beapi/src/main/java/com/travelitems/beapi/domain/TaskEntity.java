@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -14,7 +15,7 @@ public class TaskEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String task;
 
     @Column
@@ -26,11 +27,14 @@ public class TaskEntity {
     @Column
     private String tags;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String tripUrl;
 
     @Column
     private boolean completed;
+
+    @Column(nullable = false)
+    private LocalDateTime time;
 
     public TaskEntity(String task, String price, Long assigneeId, String tripUrl, boolean completed) {
         this.task = task;

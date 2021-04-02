@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'com.travelitems'
-version = '0.0.7-beta'
-sourceCompatibility = '15'
+version = '0.0.8-beta'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()

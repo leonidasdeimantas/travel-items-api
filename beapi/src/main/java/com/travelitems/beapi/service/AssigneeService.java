@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.management.AttributeNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class AssigneeService {
         if (!tripRepository.findByTripUrl(assignee.getTripUrl()).isPresent()) {
             throw new AttributeNotFoundException();
         }
+        assignee.setTime(LocalDateTime.now());
         return assigneeRepository.save(assignee);
     }
 

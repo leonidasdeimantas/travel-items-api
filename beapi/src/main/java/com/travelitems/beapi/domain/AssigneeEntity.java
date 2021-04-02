@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -15,11 +16,14 @@ public class AssigneeEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String tripUrl;
+
+    @Column(nullable = false)
+    private LocalDateTime time;
 
     public AssigneeEntity(String name, String tripUrl) {
         this.name = name;
