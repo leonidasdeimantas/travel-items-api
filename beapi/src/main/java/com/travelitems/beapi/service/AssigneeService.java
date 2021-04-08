@@ -29,14 +29,14 @@ public class AssigneeService {
     }
 
     public Iterable<AssigneeEntity> findAssignees(String url) {
-        return assigneeRepository.findByTripUrl(url);
+        return assigneeRepository.findByTripUrlOrderByIdAsc(url);
     }
 
     public void deleteAssignee(String url, Long id) throws AttributeNotFoundException {
         if (!tripRepository.findByTripUrl(url).isPresent() || !assigneeRepository.findById(id).isPresent()) {
             throw new AttributeNotFoundException();
         }
-        Iterable<TaskEntity> tasks = tasksRepository.findByAssigneeId(id);
+        Iterable<TaskEntity> tasks = tasksRepository.findByAssigneeIdOrderByIdAsc(id);
         for (TaskEntity task : tasks) {
             task.setAssigneeId(null);
             tasksRepository.save(task);

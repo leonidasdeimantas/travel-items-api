@@ -29,11 +29,11 @@ public class TasksService {
         if (!tripRepository.findByTripUrl(url).isPresent()) {
             throw new AttributeNotFoundException();
         }
-        return tasksRepository.findByTripUrl(url);
+        return tasksRepository.findByTripUrlOrderByIdAsc(url);
     }
 
     public Iterable<TaskEntity> findTasks(String url, Long id) {
-        return tasksRepository.findByTripUrlAndAssigneeId(url, id);
+        return tasksRepository.findByTripUrlAndAssigneeIdOrderByIdAsc(url, id);
     }
 
     public TaskEntity updateTask(TaskEntity task) throws AttributeNotFoundException {

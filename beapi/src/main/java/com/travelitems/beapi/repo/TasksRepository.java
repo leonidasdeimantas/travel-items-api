@@ -4,8 +4,8 @@ import com.travelitems.beapi.domain.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TasksRepository extends JpaRepository<TaskEntity, Long> {
-    Iterable<TaskEntity> findByTripUrlAndAssigneeId(String tripUrl, Long assigneeId);
-    Iterable<TaskEntity> findByTripUrl(String tripUrl);
-    Iterable<TaskEntity> findByAssigneeId(Long assigneeId);
+    Iterable<TaskEntity> findByTripUrlAndAssigneeIdOrderByIdAsc(String tripUrl, Long assigneeId);
+    Iterable<TaskEntity> findByTripUrlOrderByIdAsc(String tripUrl);
+    Iterable<TaskEntity> findByAssigneeIdOrderByIdAsc(Long assigneeId);
     void deleteByTripUrl(String tripUrl);
 }

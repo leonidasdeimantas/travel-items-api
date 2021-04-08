@@ -67,7 +67,7 @@ public class TasksServiceTest {
     @Test
     void shouldFindTasks() throws AttributeNotFoundException {
         Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.of(tripEntity));
-        Mockito.when(tasksRepository.findByTripUrl(TRIP_URL)).thenReturn(iterableTaskEntity);
+        Mockito.when(tasksRepository.findByTripUrlOrderByIdAsc(TRIP_URL)).thenReturn(iterableTaskEntity);
 
         Assertions.assertEquals(iterableTaskEntity, tasksService.findTasks(TRIP_URL));
     }
