@@ -1,7 +1,7 @@
 package com.travelitems.beapi.service;
 
-import com.travelitems.beapi.domain.TaskEntity;
-import com.travelitems.beapi.repo.TasksRepository;
+import com.travelitems.beapi.domain.Task;
+import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,44 +13,44 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class TasksService {
-    private final TasksRepository tasksRepository;
+public class TaskService {
+    private final TaskRepository taskRepository;
     private final TripRepository tripRepository;
 
-    public TaskEntity addTask(TaskEntity task) throws AttributeNotFoundException {
+    public Task addTask(Task task) throws AttributeNotFoundException {
         if (!tripRepository.findByTripUrl(task.getTripUrl()).isPresent()) {
             throw new AttributeNotFoundException();
         }
         task.setTime(LocalDateTime.now());
-        return tasksRepository.save(task);
+        return taskRepository.save(task);
     }
 
-    public Iterable<TaskEntity> findTasks(String url) throws AttributeNotFoundException {
+    public Iterable<Task> findTasks(String url) throws AttributeNotFoundException {
         if (!tripRepository.findByTripUrl(url).isPresent()) {
             throw new AttributeNotFoundException();
         }
-        return tasksRepository.findByTripUrlOrderByIdAsc(url);
+        return taskRepository.findByTripUrlOrderByIdAsc(url);
     }
 
-    public Iterable<TaskEntity> findTasks(String url, Long id) {
-        return tasksRepository.findByTripUrlAndAssigneeIdOrderByIdAsc(url, id);
+    public Iterable<Task> findTasks(String url, Long id) {
+        return taskRepository.findByTripUrlAndAssigneeIdOrderByIdAsc(url, id);
     }
 
-    public TaskEntity updateTask(TaskEntity task) throws AttributeNotFoundException {
-        TaskEntity taskEntity = tasksRepository.findById(task.getId()).orElseThrow(AttributeNotFoundException::new);
+    public Task updateTask(Task task) throws AttributeNotFoundException {
+        Task taskEntity = taskRepository.findById(task.getId()).orElseThrow(AttributeNotFoundException::new);
 
         taskEntity.setAssigneeId(task.getAssigneeId());
         taskEntity.setTask(task.getTask());
         taskEntity.setPrice(task.getPrice());
         taskEntity.setCompleted(task.isCompleted());
 
-        return tasksRepository.save(taskEntity);
+        return taskRepository.save(taskEntity);
     }
 
     public void deleteTask(String url, Long id) throws AttributeNotFoundException {
-        if (!tripRepository.findByTripUrl(url).isPresent() || !tasksRepository.findById(id).isPresent()) {
+        if (!tripRepository.findByTripUrl(url).isPresent() || !taskRepository.findById(id).isPresent()) {
             throw new AttributeNotFoundException();
         }
-        tasksRepository.deleteById(id);
+        taskRepository.deleteById(id);
     }
 }

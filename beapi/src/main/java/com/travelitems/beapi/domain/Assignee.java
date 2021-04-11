@@ -1,5 +1,6 @@
 package com.travelitems.beapi.domain;
 
+
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -10,33 +11,24 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class TripEntity {
+public class Assignee {
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    private String tripUrl;
-
-    @Column(nullable = false)
     private String name;
 
-    @Column
-    private String location;
+    @Column(nullable = false)
+    private String tripUrl;
 
     @Column(nullable = false)
     private LocalDateTime time;
 
-    public TripEntity(String tripUrl, String name, String location) {
-        this.tripUrl = tripUrl;
+    public Assignee(String name, String tripUrl) {
         this.name = name;
-        this.location = location;
-        this.time = LocalDateTime.now();
+        this.tripUrl = tripUrl;
     }
 
-    protected TripEntity() {};
-
-    public TripDto tripToDto() {
-        return new TripDto(this.tripUrl, this.name, this.location);
-    }
+    protected Assignee() {};
 }

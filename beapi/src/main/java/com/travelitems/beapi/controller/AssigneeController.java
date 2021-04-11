@@ -1,6 +1,6 @@
 package com.travelitems.beapi.controller;
 
-import com.travelitems.beapi.domain.AssigneeEntity;
+import com.travelitems.beapi.domain.Assignee;
 import com.travelitems.beapi.service.AssigneeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,12 +19,12 @@ public class AssigneeController {
     private final AssigneeService assigneeService;
 
     @GetMapping(value = "/all")
-    public Iterable<AssigneeEntity> getAllAssignees(@RequestParam String tripUrl) {
+    public Iterable<Assignee> getAllAssignees(@RequestParam String tripUrl) {
         return assigneeService.findAssignees(tripUrl);
     }
 
     @PostMapping
-    public ResponseEntity addAssignee(@RequestBody AssigneeEntity assignee) {
+    public ResponseEntity addAssignee(@RequestBody Assignee assignee) {
         try {
             assigneeService.addAssignee(assignee);
         } catch (AttributeNotFoundException ex) {

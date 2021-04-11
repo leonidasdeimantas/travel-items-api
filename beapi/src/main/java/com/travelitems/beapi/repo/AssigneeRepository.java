@@ -1,9 +1,9 @@
 package com.travelitems.beapi.repo;
 
-import com.travelitems.beapi.domain.AssigneeEntity;
+import com.travelitems.beapi.domain.Assignee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AssigneeRepository extends JpaRepository<AssigneeEntity, Long> {
-    Iterable<AssigneeEntity> findByTripUrlOrderByIdAsc(String tripUrl);
+public interface AssigneeRepository extends JpaRepository<Assignee, Long> {
+    Iterable<Assignee> findByTripUrlOrderByIdAsc(String tripUrl);
     void deleteByTripUrl(String tripUrl);
 }

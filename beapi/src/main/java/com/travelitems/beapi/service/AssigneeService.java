@@ -1,9 +1,9 @@
 package com.travelitems.beapi.service;
 
-import com.travelitems.beapi.domain.AssigneeEntity;
-import com.travelitems.beapi.domain.TaskEntity;
+import com.travelitems.beapi.domain.Assignee;
+import com.travelitems.beapi.domain.Task;
 import com.travelitems.beapi.repo.AssigneeRepository;
-import com.travelitems.beapi.repo.TasksRepository;
+import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 public class AssigneeService {
     private final AssigneeRepository assigneeRepository;
     private final TripRepository tripRepository;
-    private final TasksRepository tasksRepository;
+    private final TaskRepository taskRepository;
 
-    public AssigneeEntity addAssignee(AssigneeEntity assignee) throws AttributeNotFoundException {
+    public Assignee addAssignee(Assignee assignee) throws AttributeNotFoundException {
         if (!tripRepository.findByTripUrl(assignee.getTripUrl()).isPresent()) {
             throw new AttributeNotFoundException();
         }
@@ -28,7 +28,7 @@ public class AssigneeService {
         return assigneeRepository.save(assignee);
     }
 
-    public Iterable<AssigneeEntity> findAssignees(String url) {
+    public Iterable<Assignee> findAssignees(String url) {
         return assigneeRepository.findByTripUrlOrderByIdAsc(url);
     }
 
@@ -36,10 +36,10 @@ public class AssigneeService {
         if (!tripRepository.findByTripUrl(url).isPresent() || !assigneeRepository.findById(id).isPresent()) {
             throw new AttributeNotFoundException();
         }
-        Iterable<TaskEntity> tasks = tasksRepository.findByAssigneeIdOrderByIdAsc(id);
-        for (TaskEntity task : tasks) {
+        Iterable<Task> tasks = taskRepository.findByAssigneeIdOrderByIdAsc(id);
+        for (Task task : tasks) {
             task.setAssigneeId(null);
-            tasksRepository.save(task);
+            taskRepository.save(task);
         }
         assigneeRepository.deleteById(id);
     }

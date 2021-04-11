@@ -1,10 +1,10 @@
 package com.travelitems.beapi.service;
 
 import com.travelitems.beapi.domain.TripDto;
-import com.travelitems.beapi.domain.NewTripDto;
-import com.travelitems.beapi.domain.TripEntity;
+import com.travelitems.beapi.domain.TripNewDto;
+import com.travelitems.beapi.domain.Trip;
 import com.travelitems.beapi.repo.AssigneeRepository;
-import com.travelitems.beapi.repo.TasksRepository;
+import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
 import com.travelitems.beapi.utils.RandomString;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +16,18 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class TripsService {
+public class TripService {
     private final TripRepository tripRepository;
-    private final TasksRepository tasksRepository;
+    private final TaskRepository taskRepository;
     private final AssigneeRepository assigneeRepository;
 
-    public TripDto createTrip(NewTripDto newTripDtoData) {
-        return tripRepository.save(new TripEntity(RandomString.get(8), newTripDtoData.getName(),
-                newTripDtoData.getLocation())).tripToDto();
+    public TripDto createTrip(TripNewDto tripNewDtoData) {
+        return tripRepository.save(new Trip(RandomString.get(8), tripNewDtoData.getName(),
+                tripNewDtoData.getLocation())).tripToDto();
     }
 
     public TripDto getTrip(String tripUrl) throws AttributeNotFoundException {
-        return tripRepository.findByTripUrl(tripUrl).map(tripEntity -> { return tripEntity.tripToDto(); })
+        return tripRepository.findByTripUrl(tripUrl).map(trip -> { return trip.tripToDto(); })
                 .orElseThrow(() -> new AttributeNotFoundException());
     }
 
@@ -35,7 +35,7 @@ public class TripsService {
         if (!tripRepository.findByTripUrl(url).isPresent()) {
             throw new AttributeNotFoundException();
         }
-        tasksRepository.deleteByTripUrl(url);
+        taskRepository.deleteByTripUrl(url);
         assigneeRepository.deleteByTripUrl(url);
         tripRepository.deleteByTripUrl(url);
     }

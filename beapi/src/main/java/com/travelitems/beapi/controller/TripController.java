@@ -1,8 +1,8 @@
 package com.travelitems.beapi.controller;
 
 import com.travelitems.beapi.domain.TripDto;
-import com.travelitems.beapi.domain.NewTripDto;
-import com.travelitems.beapi.service.TripsService;
+import com.travelitems.beapi.domain.TripNewDto;
+import com.travelitems.beapi.service.TripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,26 +17,26 @@ import javax.management.AttributeNotFoundException;
 @CrossOrigin
 @RequestMapping("/trip")
 public class TripController {
-    private final TripsService tripsService;
+    private final TripService tripService;
 
     @GetMapping
     public TripDto getTripExist(@RequestParam String tripUrl) {
         try {
-            return tripsService.getTrip(tripUrl);
+            return tripService.getTrip(tripUrl);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    public TripDto addTrip(@RequestBody NewTripDto newTripDtoData) {
-        return tripsService.createTrip(newTripDtoData);
+    public TripDto addTrip(@RequestBody TripNewDto tripNewDtoData) {
+        return tripService.createTrip(tripNewDtoData);
     }
 
     @DeleteMapping
     public ResponseEntity deleteTrip(@RequestParam String tripUrl){
         try {
-            tripsService.deleteTrip(tripUrl);
+            tripService.deleteTrip(tripUrl);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
