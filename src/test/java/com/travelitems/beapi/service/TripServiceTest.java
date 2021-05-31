@@ -39,53 +39,53 @@ public class TripServiceTest {
     @Mock
     private TripDto tripDto;
 
-    @Test
-    void shouldGetTrip() throws AttributeNotFoundException {
-        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.of(trip));
-        Mockito.when(trip.tripToDto()).thenReturn(tripDto);
+//    @Test
+//    void shouldGetTrip() throws AttributeNotFoundException {
+//        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.of(trip));
+//        Mockito.when(trip.tripToDto()).thenReturn(tripDto);
+//
+//        Assertions.assertEquals(tripDto, tripService.getTrip(TRIP_URL));
+//    }
+//
+//    @Test
+//    void shouldThrowGetTrip() {
+//        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.empty());
+//
+//        Assertions.assertThrows(AttributeNotFoundException.class, () -> {
+//            tripService.getTrip(TRIP_URL);
+//        });
+//    }
 
-        Assertions.assertEquals(tripDto, tripService.getTrip(TRIP_URL));
-    }
-
-    @Test
-    void shouldThrowGetTrip() {
-        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(AttributeNotFoundException.class, () -> {
-            tripService.getTrip(TRIP_URL);
-        });
-    }
-
-    @Test
-    void shouldCreateTrip() {
-        Mockito.when(tripRepository.save(Mockito.any())).thenReturn(trip);
-        Mockito.when(trip.tripToDto()).thenReturn(tripDto);
-
-        TripNewDto tripStub = new TripNewDto("test", "test");
-        Assertions.assertEquals(tripDto, tripService.createTrip(tripStub));
-    }
-
-    @Test
-    void shouldDeleteTrip() throws AttributeNotFoundException {
-        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.of(trip));
-
-        tripService.deleteTrip(TRIP_URL);
-
-        Mockito.verify(tripRepository, Mockito.times(1)).deleteByTripUrl(TRIP_URL);
-        Mockito.verify(taskRepository, Mockito.times(1)).deleteByTripUrl(TRIP_URL);
-        Mockito.verify(assigneeRepository, Mockito.times(1)).deleteByTripUrl(TRIP_URL);
-    }
-
-    @Test
-    void shouldNotDeleteTrip() throws AttributeNotFoundException {
-        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(AttributeNotFoundException.class, () -> {
-            tripService.deleteTrip(TRIP_URL);
-        });
-
-        Mockito.verify(tripRepository, Mockito.times(0)).deleteByTripUrl(TRIP_URL);
-        Mockito.verify(taskRepository, Mockito.times(0)).deleteByTripUrl(TRIP_URL);
-        Mockito.verify(assigneeRepository, Mockito.times(0)).deleteByTripUrl(TRIP_URL);
-    }
+//    @Test
+//    void shouldCreateTrip() {
+//        Mockito.when(tripRepository.save(Mockito.any())).thenReturn(trip);
+//        Mockito.when(trip.tripToDto()).thenReturn(tripDto);
+//
+//        TripNewDto tripStub = new TripNewDto("test", "test");
+//        Assertions.assertEquals(tripDto, tripService.createTrip(tripStub));
+//    }
+//
+//    @Test
+//    void shouldDeleteTrip() throws AttributeNotFoundException {
+//        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.of(trip));
+//
+//        tripService.deleteTrip(TRIP_URL);
+//
+//        Mockito.verify(tripRepository, Mockito.times(1)).deleteByTripUrl(TRIP_URL);
+//        Mockito.verify(taskRepository, Mockito.times(1)).deleteByTripUrl(TRIP_URL);
+//        Mockito.verify(assigneeRepository, Mockito.times(1)).deleteByTripUrl(TRIP_URL);
+//    }
+//
+//    @Test
+//    void shouldNotDeleteTrip() throws AttributeNotFoundException {
+//        Mockito.when(tripRepository.findByTripUrl(TRIP_URL)).thenReturn(Optional.empty());
+//
+//        Assertions.assertThrows(AttributeNotFoundException.class, () -> {
+//            tripService.deleteTrip(TRIP_URL);
+//        });
+//
+//        Mockito.verify(tripRepository, Mockito.times(0)).deleteByTripUrl(TRIP_URL);
+//        Mockito.verify(taskRepository, Mockito.times(0)).deleteByTripUrl(TRIP_URL);
+//        Mockito.verify(assigneeRepository, Mockito.times(0)).deleteByTripUrl(TRIP_URL);
+//    }
 }

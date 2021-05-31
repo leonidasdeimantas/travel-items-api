@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
     Optional<Trip> findByTripUrl(String url);
+    Optional<Trip> findByTripUrlAndUserId(String url, Long userId);
+    Iterable<Trip> findByUserId(Long userId);
     void deleteByTripUrl(String tripUrl);
 }

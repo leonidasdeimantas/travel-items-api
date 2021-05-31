@@ -1,4 +1,4 @@
-package com.travelitems.beapi.repository;
+package com.travelitems.beapi.repo;
 
 import java.util.Optional;
 

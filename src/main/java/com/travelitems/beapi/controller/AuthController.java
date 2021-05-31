@@ -27,8 +27,8 @@ import com.travelitems.beapi.payload.request.LoginRequest;
 import com.travelitems.beapi.payload.request.SignupRequest;
 import com.travelitems.beapi.payload.response.JwtResponse;
 import com.travelitems.beapi.payload.response.MessageResponse;
-import com.travelitems.beapi.repository.RoleRepository;
-import com.travelitems.beapi.repository.UserRepository;
+import com.travelitems.beapi.repo.RoleRepository;
+import com.travelitems.beapi.repo.UserRepository;
 import com.travelitems.beapi.security.jwt.JwtUtils;
 import com.travelitems.beapi.security.services.UserDetailsImpl;
 

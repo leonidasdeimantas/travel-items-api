@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.travelitems.beapi.domain.User;
-import com.travelitems.beapi.repository.UserRepository;
+import com.travelitems.beapi.repo.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

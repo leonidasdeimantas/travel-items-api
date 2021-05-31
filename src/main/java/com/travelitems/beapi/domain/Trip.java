@@ -27,11 +27,15 @@ public class Trip {
     @Column(nullable = false)
     private LocalDateTime time;
 
-    public Trip(String tripUrl, String name, String location) {
+    @Column(nullable = false)
+    private Long userId;
+
+    public Trip(String tripUrl, String name, String location, Long userId) {
         this.tripUrl = tripUrl;
         this.name = name;
         this.location = location;
         this.time = LocalDateTime.now();
+        this.userId = userId;
     }
 
     protected Trip() {};
