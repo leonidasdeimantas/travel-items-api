@@ -8,23 +8,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.travelitems.beapi.security.services.UserDetailsServiceImpl;
 
 @Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
-  @Autowired
-  private JwtUtils jwtUtils;
+  private final UserDetailsService userDetailsService;
+  private final JwtUtils jwtUtils;
 
-  @Autowired
-  private UserDetailsServiceImpl userDetailsService;
+  public AuthTokenFilter(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, JwtUtils jwtTokenUtil) {
+    this.userDetailsService = userDetailsService;
+    this.jwtUtils = jwtTokenUtil;
+  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

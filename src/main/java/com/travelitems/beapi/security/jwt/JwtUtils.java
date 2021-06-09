@@ -64,13 +64,4 @@ public class JwtUtils {
 
     return null;
   }
-
-  public String getUsernameFromJwt(HttpServletRequest request) {
-    String jwt = this.parseJwt(request);
-    if (jwt != null && this.validateJwtToken(jwt)) {
-      return this.getUserNameFromJwtToken(jwt);
-    }
-
-    return "";
-  }
 }

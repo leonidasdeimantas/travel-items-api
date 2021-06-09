@@ -1,6 +1,6 @@
 package com.travelitems.beapi.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,13 +10,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.travelitems.beapi.security.jwt.AuthEntryPointJwt;
 import com.travelitems.beapi.security.jwt.AuthTokenFilter;
-import com.travelitems.beapi.security.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -25,20 +25,17 @@ import com.travelitems.beapi.security.services.UserDetailsServiceImpl;
 		// jsr250Enabled = true,
 		prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+	private final UserDetailsService userDetailsService;
+	private final AuthTokenFilter authTokenFilter;
+	private final AuthEntryPointJwt authEntryPointJwt;
 
-	@Autowired
-	private AuthEntryPointJwt unauthorizedHandler;
-
-	@Bean
-	public AuthTokenFilter authenticationJwtTokenFilter() {
-		return new AuthTokenFilter();
-	}
-
-	@Override
-	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	public WebSecurityConfig(
+			@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
+			AuthTokenFilter authTokenFilter,
+			AuthEntryPointJwt authEntryPointJwt) {
+		this.userDetailsService = userDetailsService;
+		this.authTokenFilter = authTokenFilter;
+		this.authEntryPointJwt = authEntryPointJwt;
 	}
 
 	@Bean
@@ -53,9 +50,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
+	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	}
+
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
-			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+			.exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests().antMatchers("/auth/**").permitAll()
 				.antMatchers("/test/**").authenticated()
@@ -65,6 +67,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/public/**").permitAll()
 				.anyRequest().authenticated();
 
-		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }
