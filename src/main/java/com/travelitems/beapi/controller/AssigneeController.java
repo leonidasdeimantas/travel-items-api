@@ -20,7 +20,11 @@ public class AssigneeController {
 
     @GetMapping(value = "/all")
     public Iterable<Assignee> getAllAssignees(@RequestParam String tripUrl) {
-        return assigneeService.findAssignees(tripUrl);
+        try {
+            return assigneeService.findAssignees(tripUrl);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

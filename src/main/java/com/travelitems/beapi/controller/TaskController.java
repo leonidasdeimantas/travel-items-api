@@ -29,7 +29,11 @@ public class TaskController {
 
     @GetMapping
     public Iterable<Task> getAllTripTasksForAssingee(@RequestParam String tripUrl, @RequestParam Long assigneeId) {
-        return taskService.findTasks(tripUrl, assigneeId);
+        try {
+            return taskService.findTasks(tripUrl, assigneeId);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

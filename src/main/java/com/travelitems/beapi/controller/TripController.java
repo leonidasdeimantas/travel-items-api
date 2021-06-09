@@ -23,12 +23,11 @@ import java.util.List;
 @RequestMapping("/trip")
 public class TripController {
     private final TripService tripService;
-    private final SecurityServiceImpl securityService;
 
     @GetMapping
     public TripDto getTrip(@RequestParam String tripUrl) {
         try {
-            return tripService.getTrip(tripUrl, securityService.findLoggedInUsername());
+            return tripService.getTrip(tripUrl);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -36,13 +35,13 @@ public class TripController {
 
     @GetMapping(value = "/all")
     public List<TripDto> getAllTrips() {
-        return tripService.getAllTrips(securityService.findLoggedInUsername());
+        return tripService.getAllTrips();
     }
 
     @PostMapping
     public TripDto addTrip(@RequestBody TripNewDto tripNewDtoData) {
         try {
-            return tripService.createTrip(tripNewDtoData, securityService.findLoggedInUsername());
+            return tripService.createTrip(tripNewDtoData);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -51,7 +50,7 @@ public class TripController {
     @DeleteMapping
     public ResponseEntity deleteTrip(@RequestParam String tripUrl){
         try {
-            tripService.deleteTrip(tripUrl, securityService.findLoggedInUsername());
+            tripService.deleteTrip(tripUrl);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
