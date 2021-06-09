@@ -1,6 +1,6 @@
 package com.travelitems.beapi.security.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,9 +11,9 @@ import com.travelitems.beapi.domain.User;
 import com.travelitems.beapi.repo.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-  @Autowired
-  UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Override
   @Transactional

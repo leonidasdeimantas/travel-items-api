@@ -3,12 +3,14 @@ package com.travelitems.beapi.service;
 import com.travelitems.beapi.domain.TripDto;
 import com.travelitems.beapi.domain.TripNewDto;
 import com.travelitems.beapi.domain.Trip;
+import com.travelitems.beapi.domain.User;
 import com.travelitems.beapi.repo.AssigneeRepository;
 import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
 import com.travelitems.beapi.repo.UserRepository;
 import com.travelitems.beapi.utils.RandomString;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.management.AttributeNotFoundException;
@@ -26,27 +28,27 @@ public class TripService {
     private final UserRepository userRepository;
 
     public TripDto createTrip(TripNewDto tripNewDtoData, String username) throws AttributeNotFoundException {
-        Long userId = userRepository.findByUsername(username).map(user -> { return user.getId(); })
-                .orElseThrow(() -> new AttributeNotFoundException());
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
         return tripRepository.save(new Trip(RandomString.get(8), tripNewDtoData.getName(),
-                tripNewDtoData.getLocation(), userId)).tripToDto();
+                tripNewDtoData.getLocation(), user.getId())).tripToDto();
     }
 
     public TripDto getTrip(String tripUrl, String username) throws AttributeNotFoundException {
-        Long userId = userRepository.findByUsername(username).map(user -> { return user.getId(); })
-                .orElseThrow(() -> new AttributeNotFoundException());
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-        return tripRepository.findByTripUrlAndUserId(tripUrl, userId).map(trip -> { return trip.tripToDto(); })
+        return tripRepository.findByTripUrlAndUserId(tripUrl, user.getId()).map(trip -> { return trip.tripToDto(); })
                 .orElseThrow(() -> new AttributeNotFoundException());
     }
 
-    public List<TripDto> getAllTrips(String username) throws AttributeNotFoundException {
-        Long userId = userRepository.findByUsername(username).map(user -> { return user.getId(); })
-                .orElseThrow(() -> new AttributeNotFoundException());
+    public List<TripDto> getAllTrips(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-        List tripDtoList = new ArrayList();
-        tripRepository.findByUserId(userId).forEach(trip -> {
+        List<TripDto> tripDtoList = new ArrayList<>();
+        tripRepository.findByUserId(user.getId()).forEach(trip -> {
             tripDtoList.add(trip.tripToDto());
         });
 
@@ -54,10 +56,10 @@ public class TripService {
     }
 
     public void deleteTrip(String url, String username) throws AttributeNotFoundException {
-        Long userId = userRepository.findByUsername(username).map(user -> { return user.getId(); })
-                .orElseThrow(() -> new AttributeNotFoundException());
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-        if (!tripRepository.findByTripUrlAndUserId(url, userId).isPresent()) {
+        if (!tripRepository.findByTripUrlAndUserId(url, user.getId()).isPresent()) {
             throw new AttributeNotFoundException();
         }
         taskRepository.deleteByTripUrl(url);
