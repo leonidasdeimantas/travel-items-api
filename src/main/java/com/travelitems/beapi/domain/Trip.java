@@ -30,6 +30,9 @@ public class Trip {
     @Column(nullable = false)
     private Long userId;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean isPublic;
+
     public Trip(String tripUrl, String name, String location, Long userId) {
         this.tripUrl = tripUrl;
         this.name = name;

@@ -3,6 +3,7 @@ package com.travelitems.beapi.security;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -60,11 +61,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests().antMatchers("/auth/**").permitAll()
-				.antMatchers("/test/**").authenticated()
-				.antMatchers("/assignee/**").access("hasRole('USER') or hasRole('ADMIN')")
-				.antMatchers("/task/**").access("hasRole('USER') or hasRole('ADMIN')")
-				.antMatchers("/trip/**").access("hasRole('USER') or hasRole('ADMIN')")
-				.antMatchers("/public/**").permitAll()
+				.antMatchers("/task/all/**").authenticated()
+				.antMatchers("/assignee/**").permitAll()
+				.antMatchers("/task/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/trip/**").permitAll()
 				.anyRequest().authenticated();
 
 		http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,7 +1,9 @@
 package com.travelitems.beapi.controller;
 
+import com.travelitems.beapi.domain.Task;
 import com.travelitems.beapi.domain.TripDto;
 import com.travelitems.beapi.domain.TripNewDto;
+import com.travelitems.beapi.domain.TripPublicDto;
 import com.travelitems.beapi.security.jwt.JwtUtils;
 import com.travelitems.beapi.security.services.SecurityServiceImpl;
 import com.travelitems.beapi.service.TripService;
@@ -45,6 +47,16 @@ public class TripController {
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping
+    public ResponseEntity changePublicTrip(@RequestBody TripPublicDto tripPublicDto) {
+        try {
+            tripService.changePublicTrip(tripPublicDto);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping

@@ -1,9 +1,6 @@
 package com.travelitems.beapi.service;
 
-import com.travelitems.beapi.domain.TripDto;
-import com.travelitems.beapi.domain.TripNewDto;
-import com.travelitems.beapi.domain.Trip;
-import com.travelitems.beapi.domain.User;
+import com.travelitems.beapi.domain.*;
 import com.travelitems.beapi.repo.AssigneeRepository;
 import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
@@ -29,19 +26,27 @@ public class TripService {
     private final UserRepository userRepository;
     private final SecurityServiceImpl securityService;
 
-    private User getUser() {
-        return userRepository.findByUsername(securityService.findLoggedInUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with this username"));
+    // could be public
+    public TripDto getTrip(String tripUrl) throws AttributeNotFoundException {
+        Trip trip = tripRepository.findByTripUrl(tripUrl).orElseThrow(() -> new AttributeNotFoundException());
+        if (trip.isPublic() || trip.getUserId() == getUser().getId()) {
+            return trip.tripToDto();
+        } else {
+            throw new AttributeNotFoundException();
+        }
     }
 
+    // only with auth
     public TripDto createTrip(TripNewDto tripNewDtoData) throws AttributeNotFoundException {
         return tripRepository.save(new Trip(RandomString.get(8), tripNewDtoData.getName(),
                 tripNewDtoData.getLocation(), getUser().getId())).tripToDto();
     }
 
-    public TripDto getTrip(String tripUrl) throws AttributeNotFoundException {
-        return tripRepository.findByTripUrlAndUserId(tripUrl, getUser().getId()).map(trip -> { return trip.tripToDto(); })
-                .orElseThrow(() -> new AttributeNotFoundException());
+    public Trip changePublicTrip(TripPublicDto tripPublicDto) throws AttributeNotFoundException {
+        Trip tripEntity = tripRepository.findByTripUrlAndUserId(tripPublicDto.getUrl(), getUser().getId()).orElseThrow(AttributeNotFoundException::new);
+
+        tripEntity.setPublic(tripPublicDto.isPublic());
+        return tripRepository.save(tripEntity);
     }
 
     public List<TripDto> getAllTrips() {
@@ -60,5 +65,11 @@ public class TripService {
         taskRepository.deleteByTripUrl(url);
         assigneeRepository.deleteByTripUrl(url);
         tripRepository.deleteByTripUrl(url);
+    }
+
+    // private
+    private User getUser() {
+        return userRepository.findByUsername(securityService.findLoggedInUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with this username"));
     }
 }

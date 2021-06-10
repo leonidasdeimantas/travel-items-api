@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TripNewDto {
-    private String name;
-    private String location;
+public class TripPublicDto {
+	private String url;
+	private boolean isPublic;
 }

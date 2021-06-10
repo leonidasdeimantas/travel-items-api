@@ -1,6 +1,7 @@
 package com.travelitems.beapi.service;
 
 import com.travelitems.beapi.domain.Task;
+import com.travelitems.beapi.domain.Trip;
 import com.travelitems.beapi.domain.User;
 import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
@@ -24,14 +25,7 @@ public class TaskService {
     private final UserRepository userRepository;
     private final SecurityServiceImpl securityService;
 
-    private void checkIfTripAvailable(String url) throws AttributeNotFoundException {
-        Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
-
-        if (user.isPresent() && tripRepository.findByTripUrlAndUserId(url, user.get().getId()).isPresent()) {
-            throw new AttributeNotFoundException();
-        }
-    }
-
+    // could be public
     public Task addTask(Task task) throws AttributeNotFoundException {
         checkIfTripAvailable(task.getTripUrl());
         task.setTime(LocalDateTime.now());
@@ -67,5 +61,17 @@ public class TaskService {
         }
 
         taskRepository.deleteById(id);
+    }
+
+    // private
+    private void checkIfTripAvailable(String url) throws AttributeNotFoundException {
+        Trip trip = tripRepository.findByTripUrl(url).orElseThrow(AttributeNotFoundException::new);
+        Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
+
+        if (trip.isPublic() || (user.isPresent() && trip.getUserId() == user.get().getId())) {
+            return;
+        } else {
+            throw new AttributeNotFoundException();
+        }
     }
 }

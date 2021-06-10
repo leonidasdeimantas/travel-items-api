@@ -2,6 +2,7 @@ package com.travelitems.beapi.service;
 
 import com.travelitems.beapi.domain.Assignee;
 import com.travelitems.beapi.domain.Task;
+import com.travelitems.beapi.domain.Trip;
 import com.travelitems.beapi.domain.User;
 import com.travelitems.beapi.repo.AssigneeRepository;
 import com.travelitems.beapi.repo.TaskRepository;
@@ -29,14 +30,7 @@ public class AssigneeService {
     private final UserRepository userRepository;
     private final SecurityServiceImpl securityService;
 
-    private void checkIfTripAvailable(String url) throws AttributeNotFoundException {
-        Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
-
-        if (user.isPresent() && tripRepository.findByTripUrlAndUserId(url, user.get().getId()).isPresent()) {
-            throw new AttributeNotFoundException();
-        }
-    }
-
+    // could be public
     public Assignee addAssignee(Assignee assignee) throws AttributeNotFoundException {
         checkIfTripAvailable(assignee.getTripUrl());
         assignee.setTime(LocalDateTime.now());
@@ -59,5 +53,17 @@ public class AssigneeService {
             taskRepository.save(task);
         }
         assigneeRepository.deleteById(id);
+    }
+
+    // private
+    private void checkIfTripAvailable(String url) throws AttributeNotFoundException {
+        Trip trip = tripRepository.findByTripUrl(url).orElseThrow(AttributeNotFoundException::new);
+        Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
+
+        if (trip.isPublic() || (user.isPresent() && trip.getUserId() == user.get().getId())) {
+            return;
+        } else {
+            throw new AttributeNotFoundException();
+        }
     }
 }
