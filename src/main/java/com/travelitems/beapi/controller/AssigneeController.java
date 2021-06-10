@@ -32,7 +32,7 @@ public class AssigneeController {
         try {
             assigneeService.addAssignee(assignee);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class AssigneeController {
         try {
             assigneeService.deleteAssignee(tripUrl, assigneeId);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
     }

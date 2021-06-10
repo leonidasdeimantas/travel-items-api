@@ -45,7 +45,7 @@ public class TripController {
         try {
             return tripService.createTrip(tripNewDtoData);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -54,7 +54,7 @@ public class TripController {
         try {
             tripService.changePublicTrip(tripPublicDto);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -64,7 +64,7 @@ public class TripController {
         try {
             tripService.deleteTrip(tripUrl);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
     }

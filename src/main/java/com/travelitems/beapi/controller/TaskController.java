@@ -41,7 +41,7 @@ public class TaskController {
         try {
             taskService.addTask(task);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -51,7 +51,7 @@ public class TaskController {
         try {
             taskService.updateTask(task);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -61,7 +61,7 @@ public class TaskController {
         try {
             taskService.deleteTask(tripUrl, taskId);
         } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
