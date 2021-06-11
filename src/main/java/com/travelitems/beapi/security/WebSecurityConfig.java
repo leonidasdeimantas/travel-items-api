@@ -18,6 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.travelitems.beapi.security.jwt.AuthEntryPointJwt;
 import com.travelitems.beapi.security.jwt.AuthTokenFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration
 @EnableWebSecurity
@@ -55,13 +57,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
+	@Bean
+	public HttpFirewall looseHttpFirewall() {
+		StrictHttpFirewall firewall = new StrictHttpFirewall();
+		firewall.setAllowSemicolon(true);
+		firewall.setAllowUrlEncodedPercent(true);
+		firewall.setAllowUrlEncodedSlash(true);
+		firewall.setAllowUrlEncodedPeriod(true);
+		firewall.setAllowUrlEncodedDoubleSlash(true);
+		firewall.setAllowBackSlash(true);
+		return firewall;
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests().antMatchers("/auth/**").permitAll()
-				.antMatchers("/task/all/**").authenticated()
+				.antMatchers("/trip/all/**").authenticated()
 				.antMatchers("/assignee/**").permitAll()
 				.antMatchers("/task/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/trip/**").permitAll()

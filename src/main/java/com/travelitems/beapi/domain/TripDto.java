@@ -9,4 +9,5 @@ public class TripDto {
     private String tripUrl;
     private String name;
     private String location;
+    private boolean isPublic;
 }

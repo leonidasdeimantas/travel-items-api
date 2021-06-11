@@ -33,7 +33,7 @@ import com.travelitems.beapi.security.jwt.JwtUtils;
 import com.travelitems.beapi.security.services.UserDetailsImpl;
 
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
