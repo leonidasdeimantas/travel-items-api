@@ -1,4 +1,4 @@
-package com.travelitems.beapi.domain;
+package com.travelitems.beapi.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

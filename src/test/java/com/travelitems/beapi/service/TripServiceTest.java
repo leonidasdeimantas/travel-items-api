@@ -1,21 +1,14 @@
 package com.travelitems.beapi.service;
 
-import com.travelitems.beapi.domain.TripNewDto;
-import com.travelitems.beapi.domain.TripDto;
+import com.travelitems.beapi.domain.dto.TripDto;
 import com.travelitems.beapi.domain.Trip;
 import com.travelitems.beapi.repo.AssigneeRepository;
 import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.management.AttributeNotFoundException;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class TripServiceTest {

@@ -78,6 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/trip/all/**").authenticated()
 				.antMatchers("/assignee/**").permitAll()
 				.antMatchers("/task/**").permitAll()
+				.antMatchers("/notes/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/trip/**").permitAll()
 				.anyRequest().authenticated();
 

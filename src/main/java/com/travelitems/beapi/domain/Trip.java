@@ -1,5 +1,6 @@
 package com.travelitems.beapi.domain;
 
+import com.travelitems.beapi.domain.dto.TripDto;
 import lombok.Data;
 
 import javax.persistence.*;

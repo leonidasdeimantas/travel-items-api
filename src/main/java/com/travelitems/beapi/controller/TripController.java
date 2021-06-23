@@ -1,11 +1,9 @@
 package com.travelitems.beapi.controller;
 
-import com.travelitems.beapi.domain.Task;
-import com.travelitems.beapi.domain.TripDto;
-import com.travelitems.beapi.domain.TripNewDto;
-import com.travelitems.beapi.domain.TripPublicDto;
-import com.travelitems.beapi.security.jwt.JwtUtils;
-import com.travelitems.beapi.security.services.SecurityServiceImpl;
+import com.travelitems.beapi.domain.dto.TripDto;
+import com.travelitems.beapi.domain.dto.TripLocationDto;
+import com.travelitems.beapi.domain.dto.TripNewDto;
+import com.travelitems.beapi.domain.dto.TripPublicDto;
 import com.travelitems.beapi.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +51,16 @@ public class TripController {
     public ResponseEntity changePublicTrip(@RequestBody TripPublicDto tripPublicDto) {
         try {
             tripService.changePublicTrip(tripPublicDto);
+        } catch (AttributeNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/loc")
+    public ResponseEntity changeTripLocation(@RequestBody TripLocationDto tripLocationDto) {
+        try {
+            tripService.changeTripLocation(tripLocationDto);
         } catch (AttributeNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

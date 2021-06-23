@@ -1,6 +1,10 @@
 package com.travelitems.beapi.service;
 
 import com.travelitems.beapi.domain.*;
+import com.travelitems.beapi.domain.dto.TripDto;
+import com.travelitems.beapi.domain.dto.TripLocationDto;
+import com.travelitems.beapi.domain.dto.TripNewDto;
+import com.travelitems.beapi.domain.dto.TripPublicDto;
 import com.travelitems.beapi.repo.AssigneeRepository;
 import com.travelitems.beapi.repo.TaskRepository;
 import com.travelitems.beapi.repo.TripRepository;
@@ -34,6 +38,15 @@ public class TripService {
         } else {
             throw new AttributeNotFoundException();
         }
+    }
+
+    public Trip changeTripLocation(TripLocationDto tripLocationDto) throws AttributeNotFoundException {
+        Trip trip = tripRepository.findByTripUrl(tripLocationDto.getUrl()).orElseThrow(() -> new AttributeNotFoundException());
+        if (!trip.isPublic() && !(trip.getUserId() == getUser().getId())) {
+            throw new AttributeNotFoundException();
+        }
+        trip.setLocation(tripLocationDto.getLocation());
+        return tripRepository.save(trip);
     }
 
     // only with auth
