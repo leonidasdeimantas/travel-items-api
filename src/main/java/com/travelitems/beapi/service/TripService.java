@@ -5,10 +5,7 @@ import com.travelitems.beapi.domain.dto.TripDto;
 import com.travelitems.beapi.domain.dto.TripLocationDto;
 import com.travelitems.beapi.domain.dto.TripNewDto;
 import com.travelitems.beapi.domain.dto.TripPublicDto;
-import com.travelitems.beapi.repo.AssigneeRepository;
-import com.travelitems.beapi.repo.TaskRepository;
-import com.travelitems.beapi.repo.TripRepository;
-import com.travelitems.beapi.repo.UserRepository;
+import com.travelitems.beapi.repo.*;
 import com.travelitems.beapi.security.services.SecurityServiceImpl;
 import com.travelitems.beapi.utils.RandomString;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +26,7 @@ public class TripService {
     private final AssigneeRepository assigneeRepository;
     private final UserRepository userRepository;
     private final SecurityServiceImpl securityService;
+    private final NotesRepository notesRepository;
 
     // could be public
     public TripDto getTrip(String tripUrl) throws AttributeNotFoundException {
@@ -51,7 +49,17 @@ public class TripService {
 
     // only with auth
     public TripDto createTrip(TripNewDto tripNewDtoData) throws AttributeNotFoundException {
-        return tripRepository.save(new Trip(RandomString.get(8), tripNewDtoData.getName(),
+        boolean uniqueUrlFound = false;
+        String tempUrl = "";
+
+        while (!uniqueUrlFound) {
+            tempUrl = RandomString.get(8);
+            if (!tripRepository.existsByTripUrl(tempUrl)) {
+                uniqueUrlFound = true;
+            }
+        }
+
+        return tripRepository.save(new Trip(tempUrl, tripNewDtoData.getName(),
                 tripNewDtoData.getLocation(), getUser().getId())).tripToDto();
     }
 
@@ -78,6 +86,7 @@ public class TripService {
         taskRepository.deleteByTripUrl(url);
         assigneeRepository.deleteByTripUrl(url);
         tripRepository.deleteByTripUrl(url);
+        notesRepository.deleteByTripUrl(url);
     }
 
     // private
