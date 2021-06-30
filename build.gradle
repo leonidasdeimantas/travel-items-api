@@ -36,6 +36,23 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
+apply plugin: 'jacoco'
+test.finalizedBy jacocoTestReport
+
 test {
 	useJUnitPlatform()
+}
+
+jacocoTestReport {
+	dependsOn test
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"**/payload/*",
+					"**/security/*",
+					"**/domain/*",
+			])
+		}))
+	}
 }
