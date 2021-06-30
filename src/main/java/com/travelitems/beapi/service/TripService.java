@@ -48,7 +48,7 @@ public class TripService {
     }
 
     // only with auth
-    public TripDto createTrip(TripNewDto tripNewDtoData) throws AttributeNotFoundException {
+    public TripDto createTrip(TripNewDto tripNewDtoData) {
         boolean uniqueUrlFound = false;
         String tempUrl = "";
 

@@ -40,11 +40,7 @@ public class TripController {
 
     @PostMapping
     public TripDto addTrip(@RequestBody TripNewDto tripNewDtoData) {
-        try {
-            return tripService.createTrip(tripNewDtoData);
-        } catch (AttributeNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        return tripService.createTrip(tripNewDtoData);
     }
 
     @PutMapping

@@ -30,6 +30,9 @@ public class TaskServiceTest {
 	static final Long TASK_ID = (long) 123;
 	static final Long USER_ID = (long) 321;
 	static final Long USER_ID_PUBLIC = (long) 777;
+	private Task taskStub;
+	private User userStub;
+	private Trip tripStub;
 
     @InjectMocks
     private TaskService taskService;
@@ -52,17 +55,13 @@ public class TaskServiceTest {
 	@Mock
 	private Task task;
 
-	private Task taskStub;
-	private User userStub;
-	private Trip tripStub;
-
     @BeforeEach
     void setup() {
         taskStub = new Task("testTask", "testPrice", (long) 999, TRIP_URL, true);
+		taskStub.setId(TASK_ID);
 		userStub = new User(USERNAME, "testEmail", "testPassword");
+		userStub.setId(USER_ID);
 		tripStub = new Trip(TRIP_URL, "testName", "testLocation", USER_ID);
-        taskStub.setId(TASK_ID);
-        userStub.setId(USER_ID);
     }
 
 	@Test
