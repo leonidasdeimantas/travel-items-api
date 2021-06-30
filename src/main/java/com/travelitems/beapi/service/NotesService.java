@@ -38,13 +38,13 @@ public class NotesService {
 
     public void deleteNote(String url, Long id) throws AttributeNotFoundException {
         checkIfTripAvailable(url);
-        if (!notesRepository.findById(id).isPresent()) {
+        if (notesRepository.existsById(id)) {
+            notesRepository.deleteById(id);
+        } else {
             throw new AttributeNotFoundException();
         }
-        notesRepository.deleteById(id);
     }
 
-    // private
     private void checkIfTripAvailable(String url) throws AttributeNotFoundException {
         Trip trip = tripRepository.findByTripUrl(url).orElseThrow(AttributeNotFoundException::new);
         Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
@@ -56,7 +56,6 @@ public class NotesService {
         }
     }
 
-    // private
     private User getUser() {
         return userRepository.findByUsername(securityService.findLoggedInUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with this username"));

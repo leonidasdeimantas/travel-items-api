@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NotesRepository extends JpaRepository<Note, Long> {
     Iterable<Note> findByTripUrlOrderByIdAsc(String tripUrl);
     void deleteByTripUrl(String tripUrl);
+    boolean existsById(Long id);
 }

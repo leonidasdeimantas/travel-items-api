@@ -44,18 +44,18 @@ public class AssigneeService {
 
     public void deleteAssignee(String url, Long id) throws AttributeNotFoundException {
         checkIfTripAvailable(url);
-        if (!assigneeRepository.findById(id).isPresent()) {
+        if (!assigneeRepository.existsById(id)) {
+            Iterable<Task> tasks = taskRepository.findByAssigneeIdOrderByIdAsc(id);
+            for (Task task : tasks) {
+                task.setAssigneeId(null);
+                taskRepository.save(task);
+            }
+            assigneeRepository.deleteById(id);
+        } else {
             throw new AttributeNotFoundException();
         }
-        Iterable<Task> tasks = taskRepository.findByAssigneeIdOrderByIdAsc(id);
-        for (Task task : tasks) {
-            task.setAssigneeId(null);
-            taskRepository.save(task);
-        }
-        assigneeRepository.deleteById(id);
     }
 
-    // private
     private void checkIfTripAvailable(String url) throws AttributeNotFoundException {
         Trip trip = tripRepository.findByTripUrl(url).orElseThrow(AttributeNotFoundException::new);
         Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
