@@ -8,7 +8,6 @@ import com.travelitems.beapi.repo.TripRepository;
 import com.travelitems.beapi.repo.UserRepository;
 import com.travelitems.beapi.security.services.SecurityServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.management.AttributeNotFoundException;
@@ -68,7 +67,7 @@ public class TaskService {
         Trip trip = tripRepository.findByTripUrl(url).orElseThrow(AttributeNotFoundException::new);
         Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
 
-        if (trip.isPublic() || (user.isPresent() && trip.getUserId() == user.get().getId())) {
+        if (trip.isPublic() || (user.isPresent() && (trip.getUserId() == user.get().getId()))) {
             return;
         } else {
             throw new AttributeNotFoundException();
