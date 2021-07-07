@@ -57,7 +57,7 @@ public class TaskServiceTest {
 
     @BeforeEach
     void setup() {
-        taskStub = new Task("testTask", "testPrice", (long) 999, TRIP_URL, true);
+        taskStub = new Task("testTask", "testPrice", (long) 999, TRIP_URL, true, (long) 1);
 		taskStub.setId(TASK_ID);
 		userStub = new User(USERNAME, "testEmail", "testPassword");
 		userStub.setId(USER_ID);
