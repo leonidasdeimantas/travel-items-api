@@ -33,12 +33,20 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime time;
 
+    @Column
+    private Long listId;
+
     public Task(String task, String price, Long assigneeId, String tripUrl, boolean completed) {
         this.task = task;
         this.price = price;
         this.assigneeId = assigneeId;
         this.tripUrl = tripUrl;
         this.completed = completed;
+    }
+
+    public Task(String task, String price, Long assigneeId, String tripUrl, boolean completed, Long listId) {
+        this(task, price, assigneeId, tripUrl, completed);
+        this.listId = listId;
     }
 
     protected Task() {};
